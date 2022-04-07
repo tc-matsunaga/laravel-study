@@ -1,0 +1,36 @@
+version: '3'
+services:
+  laravel-study:
+    build: ./docker
+    container_name: laravel-study
+    ports:
+      - 80:80
+    volumes:
+      - ./app:/var/www/app
+    working_dir: /var/www/app
+  mysql-study:
+    image: mysql:8.0
+    # m1macじゃない人は下の一行消してください
+    platform: linux/amd64
+    container_name: mysql-study
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: database
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+  phpmyadmin-study:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin-study
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mysql-study
+      - PMA_USER=root
+      - PMA_PASSWORD=root
+    links:
+      - mysql-study
+    ports:
+      - 8580:80
+    volumes:
+      - /sessions
