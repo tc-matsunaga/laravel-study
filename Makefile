@@ -3,10 +3,17 @@ version:
 
 build:
 	@docker-compose up -d --build
-	# @make create-project
+	@make composer-install
+	@make create-project
 
 create-project:
 	@if [ ! -e ./app ]; then \
 		docker-compose exec laravel-study composer create-project laravel/laravel .; \
 	fi;
+
+composer-install:
+	@docker-compose exec laravel-study composer install
+
+create_env:
+	@mv ./app/.env.example ./app/.env
 	
